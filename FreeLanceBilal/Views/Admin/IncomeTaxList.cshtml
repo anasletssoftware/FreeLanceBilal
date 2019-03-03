@@ -1,0 +1,140 @@
+﻿@model IEnumerable<FreeLanceBilal.Models.Client>
+
+@{
+    ViewBag.Title = "BILAL SYSTEM |IncomeTaxList";
+}
+<section class="content-header">
+    <h1>
+        Income Tax
+        <small>Clients</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("IncomeTaxList", "Admin")"><i class="fa fa-anchor"></i> Client Management</a></li>
+        <li class="active fa-list">List</li>
+    </ol>
+</section>
+
+<!--Content Body-->
+<section class="content">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3><a class="btn btn-success" href="@Url.Action("AddClient", "Admin")"><span class="fa fa-upload">Add New</span></a></h3>
+
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                        <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+                    </div>
+                </div>
+
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <table class="table" id="example1">
+                        <thead>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ClientTypeName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.CompanyName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Representative)
+                                </th>
+
+                                <th>
+                                    @Html.DisplayNameFor(model => model.CityName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ReturnTypeName)
+                                </th>
+
+                                <th>
+                                    @Html.DisplayNameFor(model => model.UserId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Password)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PIN)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ClientTypeName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CompanyName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Representative)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CityName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ReturnTypeName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserId)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Password)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.PIN)
+                                </td>
+                                <td>
+                                    @Html.ActionLink("Edit", "EditClient", new { id = item.ClientId }) |
+                                    @Html.ActionLink("Details", "DetailsClient", new { id = item.ClientId })
+                                </td>
+                            </tr>
+                        }
+                        <tfoot>
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ClientTypeName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.CompanyName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Representative)
+                                </th>
+
+                                <th>
+                                    @Html.DisplayNameFor(model => model.CityName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.ReturnTypeName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.UserId)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Password)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.PIN)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <!-- /.box-body -->
+                <div class="box-footer">
+                    <h5>Click On Details To Check Further Status</h5>
+                </div>
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>

@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "BILAL SYSTEM | Send Email";
+}
+
+<section class="content-header">
+    <h1>
+        Email
+        <small>Send</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("SendEmail","Admin")"><i class="fa fa-user-secret"></i> Email Marketing</a></li>
+        <li class="active fa-envelope">Send</li>
+    </ol>
+</section>
+
+
+<section class="content">
+
+    <!-- SELECT2 EXAMPLE -->
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <h3 class="box-title">Insert Document</h3>
+
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            </div>
+        </div>
+
+        <!-- /.box-header -->
+        <div class="box-body">
+@using(@Html.BeginForm("SendEmailSucces","Admin",FormMethod.Post, new { enctype = "multipart/form-data", id = "FormBadges" }))
+{
+    <div class="row">
+        <div class="col-md-4">
+            <label>Recipent</label>
+            <input type="email" name="EmailAddress" id="EmailAddress" placeholder="Recipent"/>
+        </div>
+    </div><br />
+    <div class="row">
+        <div class="col-md-10">
+            <div class="form-horizontal">
+                <label>Subject</label>
+                <input type="text" name="Subject" id="Subject" placeholder="Subject" style="width:100%;" />
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-10">
+            <textarea class="textarea" name="text" id="text" style="width:100%;height:250px;"></textarea>
+        </div>
+    </div>
+    <input type="submit" value="Send" class="btn btn-success" />
+}
+
+
+        </div>
+            <!-- /.box-body -->
+            <div class="box-footer">
+
+            </div>
+        
+
+    </div> <!-- /.box -->
+</section>

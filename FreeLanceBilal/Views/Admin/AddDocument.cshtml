@@ -1,0 +1,68 @@
+﻿@model FreeLanceBilal.Models.Documents
+
+@{
+    ViewBag.Title = "BILAL SYSTEM | Add Document";
+}
+<section class="content-header">
+    <h1>
+        User Management
+        <small>Add User</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="@Url.Action("UserList","Admin")"><i class="fa fa-user-secret"></i> User Management</a></li>
+        <li class="active fa-plus">Add</li>
+    </ol>
+</section>
+
+<section class="content">
+
+    <!-- SELECT2 EXAMPLE -->
+    <div class="box box-default">
+        <div class="box-header with-border">
+            <h3 class="box-title">Insert Document</h3>
+
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-remove"></i></button>
+            </div>
+        </div>
+
+        <!-- /.box-header -->
+        <div class="box-body">
+
+            @using (Html.BeginForm("SaveDocument", "Admin", FormMethod.Post, new { enctype = "multipart/form-data", id = "FormUser" }))
+            {
+                @Html.AntiForgeryToken()
+
+    <div class="row">
+        <div class="col-md-5">
+            <div class="form-group">
+                <label for="UserName ">User Name</label>
+                <input type="text" class="form-control" id="DocumentName" name="DocumentName" placeholder="Your File Name">
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-group">
+                <label for="exampleInputFile">File input</label>
+                <input type="file" id="file" name="file">
+                <p class="help-block">You Must Upload a File Before Submiting The Form.</p>
+            </div>
+        </div>
+    </div>
+          <input type="submit" value=" Save" id="Add" name="Add" class="btn btn-success" />      
+            }
+                <hr />
+
+    <div>
+        @Html.ActionLink("Back to List", "DocumentList")
+    </div>
+            
+
+        <!-- /.box-body -->
+                <div class="box-footer">
+
+                </div>
+            </div>
+   
+        </div> <!-- /.box -->
+            </section>
