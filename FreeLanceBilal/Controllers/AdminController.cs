@@ -20,8 +20,6 @@ namespace FreeLanceBilal.Controllers
         }
         PasswordHelper ph = new PasswordHelper();
 
-
-
         public ActionResult Dashboard()
         {
             if (Session["UserId"] == null)

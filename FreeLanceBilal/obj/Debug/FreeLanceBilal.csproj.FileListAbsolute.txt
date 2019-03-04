@@ -57,3 +57,4 @@ C:\Users\Anas\Documents\Visual Studio 2013\Projects\FreeLanceBilal\FreeLanceBila
 C:\Users\Anas\Documents\Visual Studio 2013\Projects\FreeLanceBilal\FreeLanceBilal\obj\Debug\FreeLanceBilal.pdb
 C:\Users\Anas\Documents\Visual Studio 2013\Projects\FreeLanceBilal\FreeLanceBilal\obj\Debug\FreeLanceBilal.Migrations.conversionstostring.resources
 C:\Users\Anas\Documents\Visual Studio 2013\Projects\FreeLanceBilal\FreeLanceBilal\obj\Debug\FreeLanceBilal.Migrations.CompanyNameaddedtoclients.resources
+C:\Users\Anas\Documents\Visual Studio 2013\Projects\FreeLanceBilal\FreeLanceBilal\obj\Debug\FreeLanceBilal.csprojResolveAssemblyReference.cache
