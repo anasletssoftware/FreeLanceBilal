@@ -24,111 +24,207 @@ namespace FreeLanceBilal.Controllers
 
         public ActionResult Dashboard()
         {
-            var month = DateTime.Now.Month.ToString();
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "UserAccounts");
+            }
+            try
+            {
+                var TotalClient = _db.Clients.Count().ToString();
+                var SalesTaxClient = _db.Clients.Count(x => x.ClientTypeName.Equals("SalesTax")).ToString();
+                var IncomeTaxClient = _db.Clients.Count(x => x.ClientTypeName.Equals("IncomeTax")).ToString();
 
-            var TotalClient = _db.Clients.Count().ToString();
-            var SalesTaxClient = _db.Clients.Count(x => x.ClientTypeName.Equals("SalesTax")).ToString();
-            var IncomeTaxClient = _db.Clients.Count(x => x.ClientTypeName.Equals("IncomeTax")).ToString();
+                DateTime dtFrom = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                DateTime dtTo = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
 
-            DateTime dtFrom = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            DateTime dtTo = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-
-            var monthlyclient = (from m in _db.Clients
-                                     where m.RegistrationDate> dtFrom && m.RegistrationDate<dtTo 
+                var monthlyclient = (from m in _db.Clients
+                                     where m.RegistrationDate > dtFrom && m.RegistrationDate < dtTo
                                      select m).Count().ToString();
 
-            ViewBag.lstTotalClient = TotalClient;
-            ViewBag.lstSalesTaxClient = SalesTaxClient;
-            ViewBag.lstIncomeTaxClient = IncomeTaxClient;
-            ViewBag.lstThisMonthClient = monthlyclient;
+                ViewBag.lstTotalClient = TotalClient;
+                ViewBag.lstSalesTaxClient = SalesTaxClient;
+                ViewBag.lstIncomeTaxClient = IncomeTaxClient;
+                ViewBag.lstThisMonthClient = monthlyclient;
 
 
-            return View();
+                return View();
+            }
+            catch
+            {
+                return RedirectToAction("~/Views/Shared.Error.CSHTML");
+            }
         }
         public ActionResult UserList()
         {
-            var lstUsers = (from u in _db.UserAccounts
-                            select u).AsEnumerable();
-            return View(lstUsers);
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "UserAccounts");
+            }
+            try
+            {
+                var lstUsers = (from u in _db.UserAccounts
+                                select u).AsEnumerable();
+                return View(lstUsers);
+            }
+            catch
+            {
+                return RedirectToAction("~/Views/Shared.Error.CSHTML");
+            }
         }
         public ActionResult AddUser()
         {
+            
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "UserAccounts");
+            }
             return View();
         }
         [HttpPost]
         public ActionResult AddUser(UserAccounts model)
         {
-            _db.UserAccounts.Add(model);
-            _db.SaveChanges();
-            return RedirectToAction("UserList");
+            try
+            {
+                if (Session["UserId"] == null)
+                {
+                    return RedirectToAction("Login", "UserAccounts");
+                }
+                _db.UserAccounts.Add(model);
+                _db.SaveChanges();
+                return RedirectToAction("UserList");
+            }
+            catch
+            {
+                return RedirectToAction("~/Views/Shared.Error.CSHTML");
+            }
         }
         public ActionResult EditUser(int id)
         {
-            var editUser = _db.UserAccounts.Where(x => x.UserId.Equals(id)).FirstOrDefault();
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "UserAccounts");
+            }
+            try
+            {
+                var editUser = _db.UserAccounts.Where(x => x.UserId.Equals(id)).FirstOrDefault();
 
-            return View(editUser);
+                return View(editUser);
+            }
+            catch
+            {
+                return RedirectToAction("~/Views/Shared.Error.CSHTML");
+            }
         }
         [HttpPost]
         public ActionResult EditUser(UserAccounts model)
         {
-            _db.Entry(model).State = EntityState.Modified;
-            _db.SaveChanges();
-            return RedirectToAction("UserList");
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "UserAccounts");
+            }
+            try
+            {
+                _db.Entry(model).State = EntityState.Modified;
+                _db.SaveChanges();
+                return RedirectToAction("UserList");
+            }
+            catch
+            {
+                return RedirectToAction("~/Views/Shared.Error.CSHTML");
+            }
         }
-        
+
         public ActionResult DeleteUser(int id)
         {
-            UserAccounts model = _db.UserAccounts.Find(id);
-            _db.UserAccounts.Remove(model);
-            _db.SaveChanges();
-            return RedirectToAction("UserList");
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "UserAccounts");
+            }
+            try
+            {
+                UserAccounts model = _db.UserAccounts.Find(id);
+                _db.UserAccounts.Remove(model);
+                _db.SaveChanges();
+                return RedirectToAction("UserList");
+            }
+            catch
+            {
+                return RedirectToAction("~/Views/Shared.Error.CSHTML");
+            }
         }
         public ActionResult AddDocument()
         {
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "UserAccounts");
+            }
             return View();
         }
         [HttpPost]
         public ActionResult SaveDocument(string DocumentName, HttpPostedFileBase file)
         {
-            Documents model = new Documents();
-
-            string FilePath = WebConfigurationManager.AppSettings["UserUploadsPath"];
-            string UserDocument = "";
-
-            if (file.ContentLength > 0)
+            if (Session["UserId"] == null)
             {
-                UserDocument = System.IO.Path.GetFileName(file.FileName);
-                string path = System.IO.Path.Combine(Server.MapPath(FilePath), UserDocument);
-                // file is uploaded
-                file.SaveAs(path);
+                return RedirectToAction("Login", "UserAccounts");
             }
-            model.DocumentName = DocumentName;
-            model.Document = FilePath + UserDocument;
+            try
+            {
+                Documents model = new Documents();
 
-            _db.Document.Add(model);
-            _db.SaveChanges();
+                string FilePath = WebConfigurationManager.AppSettings["UserUploadsPath"];
+                string UserDocument = "";
+
+                if (file.ContentLength > 0)
+                {
+                    UserDocument = System.IO.Path.GetFileName(file.FileName);
+                    string path = System.IO.Path.Combine(Server.MapPath(FilePath), UserDocument);
+                    // file is uploaded
+                    file.SaveAs(path);
+                }
+                model.DocumentName = DocumentName;
+                model.Document = FilePath + UserDocument;
+
+                _db.Document.Add(model);
+                _db.SaveChanges();
 
 
-            return RedirectToAction("DocumentList");
+                return RedirectToAction("DocumentList");
+            }
+            catch
+            {
+                return RedirectToAction("~/Views/Shared.Error.CSHTML");
+            }
         }
         public ActionResult DocumentList()
         {
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "UserAccounts");
+            }
             var lstDoc = _db.Document.ToList();
             return View(lstDoc);
         }
         public ActionResult AddClient()
         {
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "UserAccounts");
+            }
             ViewBag.ClientType = new SelectList(_db.ClientTypes, "ClienttypeId", "ClientTypeName");
             ViewBag.City = new SelectList(_db.Cities, "CityId", "CityName");
             ViewBag.State = new SelectList(_db.States, "StateId", "StateName");
             ViewBag.Return = new SelectList(_db.ReturnTypes, "ReturnTypeId", "ReturnTypeName");
             return View();
         }
-        //string ClientName, string Proprietor, int CNICNumber, string Address, DateTime RegistrationDate, string Representative, int City, int State, int Return, int ClientType, bool Services, bool Importer, bool Exporter, bool WholeSeller, bool Retailer, bool CommercialImporter, int SalesTaxNumber, int NTNNumber, int MobileNumber1, int MobileNumber2, int OfficeNumber1, int OfficeNumber2, string EmailAddress, int PIN, string UserId, string Password
         [HttpPost]
         public ActionResult SaveClient(Client model)
         {
-
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "UserAccounts");
+            }
+            try 
+            { 
             var CityName = (from c in _db.Cities
                             where c.CityId.Equals(model.CityId)
                             select c.CityName).FirstOrDefault();
@@ -145,8 +241,8 @@ namespace FreeLanceBilal.Controllers
             model.StateName = StateName;
             model.ReturnTypeName = ReturnType;
             model.ClientTypeName = ClientType;
-            try
-            {
+            
+
                 _db.Clients.Add(model);
                 _db.SaveChanges();
                // status = true;
@@ -154,37 +250,80 @@ namespace FreeLanceBilal.Controllers
             }
             catch
             {
-                return RedirectToAction("~/Views/Shared.Error.CSHTML");
+                return Redirect("~/Views/Shared.Error.CSHTML");
             }
         }
         public ActionResult SalesTaxList()
         {
-            var STList = _db.Clients.Where(x => x.ClientTypeId.Equals(1)).ToList();
-            return View(STList);
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "UserAccounts");
+            }
+            try
+            {
+                var STList = _db.Clients.Where(x => x.ClientTypeId.Equals(1)).ToList();
+                return View(STList);
+            }
+            catch
+            {
+                return Redirect("~/Views/Shared.Error.CSHTML");
+            }
         }
         public ActionResult IncomeTaxList()
         {
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "UserAccounts");
+            }
             var ITList = _db.Clients.Where(x => x.ClientTypeId.Equals(2)).ToList();
             return View(ITList);
         }
         public ActionResult GeneralList()
         {
-            var lstgeneral = _db.Clients.ToList();
-            return View(lstgeneral);
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "UserAccounts");
+            }
+            try
+            {
+                var lstgeneral = _db.Clients.ToList();
+                return View(lstgeneral);
+            }
+            catch
+            {
+                return Redirect("~/Views/Shared.Error.CSHTML");
+            }
         }
         public ActionResult EditClient(int id)
         {
-            ViewBag.ClientType = new SelectList(_db.ClientTypes, "ClienttypeId", "ClientTypeName");
-            ViewBag.City = new SelectList(_db.Cities, "CityId", "CityName");
-            ViewBag.State = new SelectList(_db.States, "StateId", "StateName");
-            ViewBag.Return = new SelectList(_db.ReturnTypes, "ReturnTypeId", "ReturnTypeName");
-           
-            var findlst = _db.Clients.Find(id);
-            return View(findlst);
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "UserAccounts");
+            }
+            try
+            {
+                ViewBag.ClientType = new SelectList(_db.ClientTypes, "ClienttypeId", "ClientTypeName");
+                ViewBag.City = new SelectList(_db.Cities, "CityId", "CityName");
+                ViewBag.State = new SelectList(_db.States, "StateId", "StateName");
+                ViewBag.Return = new SelectList(_db.ReturnTypes, "ReturnTypeId", "ReturnTypeName");
+
+                var findlst = _db.Clients.Find(id);
+                return View(findlst);
+            }
+            catch
+            {
+                return Redirect("~/Views/Shared.Error.CSHTML");
+            }
         }
         [HttpPost]
         public ActionResult EditClient(Client model)
         {
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "UserAccounts");
+            }
+            try
+            {
             var CityName = (from c in _db.Cities
                             where c.CityId.Equals(model.CityId)
                             select c.CityName).FirstOrDefault();
@@ -201,56 +340,81 @@ namespace FreeLanceBilal.Controllers
             model.StateName = StateName;
             model.ReturnTypeName = ReturnType;
             model.ClientTypeName = ClientType;
-            try
-            {
+            
                 _db.Entry(model).State = EntityState.Modified;
                 _db.SaveChanges();
                 return RedirectToAction("DashBoard");
             }
             catch
             {
-                return RedirectToAction("~/Views/Shared.Error.CSHTML");
+                return Redirect("~/Views/Shared.Error.CSHTML");
             }
             
         }
         public ActionResult DetailsClient(int id)
         {
-            var Client = _db.Clients.Find(id);
-            return View(Client);
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "UserAccounts");
+            }
+            try
+            {
+                var Client = _db.Clients.Find(id);
+                return View(Client);
+            }
+            catch
+            {
+                return Redirect("~/Views/Shared.Error.CSHTML");
+            }
         }
         public ActionResult SendEmail()
         {
+            if (Session["UserId"] == null)
+            {
+                return RedirectToAction("Login", "UserAccounts");
+            }
             return View();
         }
         [HttpPost]
         [ValidateInput(false)]
         public ActionResult SendEmailSucces(string EmailAddress, string text, string Subject)
         {
-            string EmailFromAddress = WebConfigurationManager.AppSettings["EmailFromAddress"];
-
-            if (EmailAddress != null)
+            if (Session["UserId"] == null)
             {
-                string body = "<div style='text-align:center;'>" +text + "</div>";
-               
-                body += "</table>";
-
-                var MailHelper = new MailHelper()
-                {
-
-                    Sender = EmailFromAddress,
-                    Recipient = EmailAddress,
-                    RecipientCC = null,
-                    Subject = Subject,
-                    Body = body
-                };
-                MailHelper.Send();
-
-
-                return RedirectToAction("SendEmail");
+                return RedirectToAction("Login", "UserAccounts");
             }
-            else
+            try
             {
-                return RedirectToAction("SendEmail", new { IsError = true });
+                string EmailFromAddress = WebConfigurationManager.AppSettings["EmailFromAddress"];
+
+                if (EmailAddress != null)
+                {
+                    string body = "<div style='text-align:center;'>" + text + "</div>";
+
+                    body += "</table>";
+
+                    var MailHelper = new MailHelper()
+                    {
+
+                        Sender = EmailFromAddress,
+                        Recipient = EmailAddress,
+                        RecipientCC = null,
+                        Subject = Subject,
+                        Body = body
+                    };
+                    MailHelper.Send();
+
+
+                    return RedirectToAction("SendEmail");
+                }
+                else
+                {
+                    return RedirectToAction("SendEmail", new { IsError = true });
+                }
+            }
+            catch
+            {
+                return Redirect("~/Views/Shared.Error.CSHTML");
             }
         }
     }

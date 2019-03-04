@@ -17,7 +17,6 @@ namespace FreeLanceBilal.Controllers
         {
             _db = new MyDbContext();
         }
-        PasswordHelper ph = new PasswordHelper();
 
         public ActionResult Login()
         {
