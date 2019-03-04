@@ -73,7 +73,7 @@ namespace FreeLanceBilal.Controllers
         }
         public ActionResult AddUser()
         {
-            
+
             if (Session["UserId"] == null)
             {
                 return RedirectToAction("Login", "UserAccounts");
@@ -223,29 +223,29 @@ namespace FreeLanceBilal.Controllers
             {
                 return RedirectToAction("Login", "UserAccounts");
             }
-            try 
-            { 
-            var CityName = (from c in _db.Cities
-                            where c.CityId.Equals(model.CityId)
-                            select c.CityName).FirstOrDefault();
-            var StateName = (from s in _db.States
-                             where s.StateId.Equals(model.StateId)
-                             select s.StateName).FirstOrDefault();
-            var ReturnType = (from r in _db.ReturnTypes
-                              where r.ReturnTypeId.Equals(model.ReturntypeId)
-                              select r.ReturnTypeName).FirstOrDefault();
-            var ClientType = (from c in _db.ClientTypes
-                              where c.ClienttypeId.Equals(model.ClientTypeId)
-                              select c.ClientTypeName).FirstOrDefault();
-            model.CityName = CityName;
-            model.StateName = StateName;
-            model.ReturnTypeName = ReturnType;
-            model.ClientTypeName = ClientType;
-            
+            try
+            {
+                var CityName = (from c in _db.Cities
+                                where c.CityId.Equals(model.CityId)
+                                select c.CityName).FirstOrDefault();
+                var StateName = (from s in _db.States
+                                 where s.StateId.Equals(model.StateId)
+                                 select s.StateName).FirstOrDefault();
+                var ReturnType = (from r in _db.ReturnTypes
+                                  where r.ReturnTypeId.Equals(model.ReturntypeId)
+                                  select r.ReturnTypeName).FirstOrDefault();
+                var ClientType = (from c in _db.ClientTypes
+                                  where c.ClienttypeId.Equals(model.ClientTypeId)
+                                  select c.ClientTypeName).FirstOrDefault();
+                model.CityName = CityName;
+                model.StateName = StateName;
+                model.ReturnTypeName = ReturnType;
+                model.ClientTypeName = ClientType;
+
 
                 _db.Clients.Add(model);
                 _db.SaveChanges();
-               // status = true;
+                // status = true;
                 return RedirectToAction("AddClient");
             }
             catch
@@ -324,23 +324,23 @@ namespace FreeLanceBilal.Controllers
             }
             try
             {
-            var CityName = (from c in _db.Cities
-                            where c.CityId.Equals(model.CityId)
-                            select c.CityName).FirstOrDefault();
-            var StateName = (from s in _db.States
-                             where s.StateId.Equals(model.StateId)
-                             select s.StateName).FirstOrDefault();
-            var ReturnType = (from r in _db.ReturnTypes
-                              where r.ReturnTypeId.Equals(model.ReturntypeId)
-                              select r.ReturnTypeName).FirstOrDefault();
-            var ClientType = (from c in _db.ClientTypes
-                              where c.ClienttypeId.Equals(model.ClientTypeId)
-                              select c.ClientTypeName).FirstOrDefault();
-            model.CityName = CityName;
-            model.StateName = StateName;
-            model.ReturnTypeName = ReturnType;
-            model.ClientTypeName = ClientType;
-            
+                var CityName = (from c in _db.Cities
+                                where c.CityId.Equals(model.CityId)
+                                select c.CityName).FirstOrDefault();
+                var StateName = (from s in _db.States
+                                 where s.StateId.Equals(model.StateId)
+                                 select s.StateName).FirstOrDefault();
+                var ReturnType = (from r in _db.ReturnTypes
+                                  where r.ReturnTypeId.Equals(model.ReturntypeId)
+                                  select r.ReturnTypeName).FirstOrDefault();
+                var ClientType = (from c in _db.ClientTypes
+                                  where c.ClienttypeId.Equals(model.ClientTypeId)
+                                  select c.ClientTypeName).FirstOrDefault();
+                model.CityName = CityName;
+                model.StateName = StateName;
+                model.ReturnTypeName = ReturnType;
+                model.ClientTypeName = ClientType;
+
                 _db.Entry(model).State = EntityState.Modified;
                 _db.SaveChanges();
                 return RedirectToAction("DashBoard");
@@ -349,7 +349,7 @@ namespace FreeLanceBilal.Controllers
             {
                 return Redirect("~/Views/Shared.Error.CSHTML");
             }
-            
+
         }
         public ActionResult DetailsClient(int id)
         {
@@ -379,6 +379,11 @@ namespace FreeLanceBilal.Controllers
         [ValidateInput(false)]
         public ActionResult SendEmailSucces(string EmailAddress, string text, string Subject)
         {
+            //            After sign into google account, go to:
+
+            //myaccount.google.com/lesssecureapps 
+            //or 
+            //www.google.com/settings/security/lesssecureapps 
             if (Session["UserId"] == null)
             {
                 return RedirectToAction("Login", "UserAccounts");
